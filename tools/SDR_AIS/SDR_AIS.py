@@ -114,7 +114,7 @@ class MyFrame(wx.Frame):
 
 
 		def kill_sdr(self):
-			subprocess.call(['pkill', '-9', 'aisdecoder'])
+			subprocess.call(['pkill', '-9', 'rtl_ais'])
 			subprocess.call(['pkill', '-9', 'rtl_fm'])
 			subprocess.call(['pkill', '-f', 'SDR_AIS_waterfall.py'])
 			subprocess.call(['pkill', '-f', 'SDR_AIS_fine_cal.py'])
@@ -153,7 +153,7 @@ class MyFrame(wx.Frame):
 				self.disable_sdr_controls() 
 				gain=self.gain.GetValue()
 				ppm=self.ppm.GetValue()
-				rtl-ais=subprocess.Popen(['rtl-ais', '-g', gain, '-p', ppm, '-s', '48k', '-h', '127.0.0.1', '-P', '10110']) 
+				subprocess.Popen(['rtl-ais', '-g', gain, '-p', ppm, '-R']) 
 				self.conf.set('AIS-SDR', 'enable', '1')
 				self.conf.set('AIS-SDR', 'gain', gain)
 				self.conf.set('AIS-SDR', 'ppm', ppm)
