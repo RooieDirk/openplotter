@@ -49,10 +49,10 @@ class MyFrame(wx.Frame):
 			self.ppm = wx.TextCtrl(self, -1, size=(55, 32), pos=(150, 95))
 			self.correction_label=wx.StaticText(self, label=_('Correction (ppm)'), pos=(20, 100))
 
-			self.ais_frequencies1 = wx.CheckBox(self, label=_('Channel A 161.975Mhz'), pos=(220, 60))
-			self.ais_frequencies1.Bind(wx.EVT_CHECKBOX, self.ais_frequencies)
-			self.ais_frequencies2 = wx.CheckBox(self, label=_('Channel B 162.025Mhz'), pos=(220, 95))
-			self.ais_frequencies2.Bind(wx.EVT_CHECKBOX, self.ais_frequencies)
+			#self.ais_frequencies1 = wx.CheckBox(self, label=_('Channel A 161.975Mhz'), pos=(220, 60))
+			#self.ais_frequencies1.Bind(wx.EVT_CHECKBOX, self.ais_frequencies)
+			#self.ais_frequencies2 = wx.CheckBox(self, label=_('Channel B 162.025Mhz'), pos=(220, 95))
+			#self.ais_frequencies2.Bind(wx.EVT_CHECKBOX, self.ais_frequencies)
 
 			#self.show_kplex6 =wx.Button(self, label=_('Inspector'), pos=(20, 140))
 			#self.Bind(wx.EVT_BUTTON, self.show_kplex, self.show_kplex6)
@@ -97,8 +97,8 @@ class MyFrame(wx.Frame):
 				if self.conf.get('AIS-SDR', 'enable')=='1': 
 					self.ais_sdr_enable.SetValue(True)
 					self.disable_sdr_controls()
-				if self.conf.get('AIS-SDR', 'channel')=='a': self.ais_frequencies1.SetValue(True)
-				if self.conf.get('AIS-SDR', 'channel')=='b': self.ais_frequencies2.SetValue(True)
+				#if self.conf.get('AIS-SDR', 'channel')=='a': self.ais_frequencies1.SetValue(True)
+				#if self.conf.get('AIS-SDR', 'channel')=='b': self.ais_frequencies2.SetValue(True)
 			else:
 				self.ais_sdr_enable.Disable()
 				self.disable_sdr_controls()
@@ -125,8 +125,8 @@ class MyFrame(wx.Frame):
 		def enable_sdr_controls(self):
 			self.gain.Enable()
 			self.ppm.Enable()
-			self.ais_frequencies1.Enable()
-			self.ais_frequencies2.Enable()
+			#self.ais_frequencies1.Enable()
+			#self.ais_frequencies2.Enable()
 			self.gain_label.Enable()
 			self.correction_label.Enable()
 			self.ais_sdr_enable.SetValue(False)
@@ -135,16 +135,16 @@ class MyFrame(wx.Frame):
 		def disable_sdr_controls(self):
 			self.gain.Disable()
 			self.ppm.Disable()
-			self.ais_frequencies1.Disable()
-			self.ais_frequencies2.Disable()
+			#self.ais_frequencies1.Disable()
+			#self.ais_frequencies2.Disable()
 			self.gain_label.Disable()
 			self.correction_label.Disable()
 		
-		def ais_frequencies(self, e):
-			sender = e.GetEventObject()
-			self.ais_frequencies1.SetValue(False)
-			self.ais_frequencies2.SetValue(False)
-			sender.SetValue(True)
+		#def ais_frequencies(self, e):
+			#sender = e.GetEventObject()
+			#self.ais_frequencies1.SetValue(False)
+			#self.ais_frequencies2.SetValue(False)
+			#sender.SetValue(True)
 
 		def OnOffAIS(self, e):
 			self.kill_sdr()
@@ -153,17 +153,11 @@ class MyFrame(wx.Frame):
 				self.disable_sdr_controls() 
 				gain=self.gain.GetValue()
 				ppm=self.ppm.GetValue()
-				frecuency='161975000'
-				channel='a'
-				if self.ais_frequencies2.GetValue(): 
-					frecuency='162025000'
-					channel='b'
-				rtl_fm=subprocess.Popen(['rtl_fm', '-f', frecuency, '-g', gain, '-p', ppm, '-s', '48k'], stdout = subprocess.PIPE)
-				aisdecoder=subprocess.Popen(['aisdecoder', '-h', '127.0.0.1', '-p', '10110', '-a', 'file', '-c', 'mono', '-d', '-f', '/dev/stdin'], stdin = rtl_fm.stdout)         
+				rtl-ais=subprocess.Popen(['rtl-ais', '-g', gain, '-p', ppm, '-s', '48k', '-h', '127.0.0.1', '-P', '10110']) 
 				self.conf.set('AIS-SDR', 'enable', '1')
 				self.conf.set('AIS-SDR', 'gain', gain)
 				self.conf.set('AIS-SDR', 'ppm', ppm)
-				self.conf.set('AIS-SDR', 'channel', channel)
+				#self.conf.set('AIS-SDR', 'channel', channel)
 				msg=_('SDR-AIS reception enabled')
 			else:
 				self.enable_sdr_controls()
