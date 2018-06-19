@@ -156,6 +156,12 @@ cd pypilot
 python setup.py build
 sudo python setup.py install
 
+cd $HOME/delete
+git clone https://github.com/dgiardini/rtl-ais.git
+cd rtl-ais
+make
+sudo make install
+
 cd $HOME
 sudo rm -rf delete
 
