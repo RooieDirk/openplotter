@@ -160,7 +160,7 @@ cd $HOME/delete
 git clone https://github.com/dgiardini/rtl-ais.git
 cd rtl-ais
 make
-sudo make install
+sudo cp rtl_ais /usr/bin/rtl_ais
 
 cd $HOME
 sudo rm -rf delete
